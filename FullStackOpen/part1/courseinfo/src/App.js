@@ -1,52 +1,4 @@
-// import React, { useState } from 'react'
 
-
-// const Display = ({counter}) => <div>{counter}</div>
-
-
-
-// const Button = (props) => (
-//   <button onClick={props.handleClick}>
-//     {props.text}
-//   </button>
-// )
-
-
-// const History = (props) => {
-//   if (props.allClicks.length === 0) {
-//     return (
-//       <div>
-//         the app is used by pressing the buttons
-//       </div>
-//     )
-//   }
-//   return (
-//     <div>
-//       button press history: {props.allClicks.join(' ')}
-//     </div>
-//   )
-// }
-
-// const App = () => {
-//   const [value, setValue] = useState(10)
-
-//   const setToValue = (newValue) => () => {
-//     setValue(newValue)
-//   }
-
-//   return (
-//     <div>
-//       {value}
-//       <button onClick={setToValue(1000)}>thousand</button>
-//       <button onClick={setToValue(0)}>reset</button>
-//       <button onClick={setToValue(value + 1)}>increment</button>
-//     </div>
-//   )
-// }
-
-
-
-// export default App
 
 
 import React, { useState } from 'react'
@@ -56,28 +8,6 @@ const Button = ({ handleClick, text }) => (
     {text}
   </button>
 )
-
-// const Display = ({ text, count }) => (
-//   <p> {text} {count}</p>
-// )
-
-// const Statistics = ({ data }) => {
-//   const [good, neutral, bad] = [data[0], data[1], data[2]]
-//   const total = (good + neutral + bad)
-//   const average = (good - bad) / total
-//   const positive = (good / total) * 100
-//   return (
-//     total === 0 ? <p> No feedback given</p> :
-//       <div>
-//         <Display text="good" count={good} />
-//         <Display text="neutral" count={neutral} />
-//         <Display text="bad" count={bad} />
-//         <p>all {total}</p>
-//         <p>average {average} </p>
-//         <p>positive {positive}%</p>
-//       </div>
-//   )
-// }
 
 const Statistic = (props) => {
   return (
