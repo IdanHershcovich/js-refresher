@@ -1,146 +1,76 @@
-// import React, { useState } from 'react'
-
-
-// const Display = ({counter}) => <div>{counter}</div>
-
-
-
-// const Button = (props) => (
-//   <button onClick={props.handleClick}>
-//     {props.text}
-//   </button>
-// )
-
-
-// const History = (props) => {
-//   if (props.allClicks.length === 0) {
-//     return (
-//       <div>
-//         the app is used by pressing the buttons
-//       </div>
-//     )
-//   }
-//   return (
-//     <div>
-//       button press history: {props.allClicks.join(' ')}
-//     </div>
-//   )
-// }
-
-// const App = () => {
-//   const [value, setValue] = useState(10)
-
-//   const setToValue = (newValue) => () => {
-//     setValue(newValue)
-//   }
-
-//   return (
-//     <div>
-//       {value}
-//       <button onClick={setToValue(1000)}>thousand</button>
-//       <button onClick={setToValue(0)}>reset</button>
-//       <button onClick={setToValue(value + 1)}>increment</button>
-//     </div>
-//   )
-// }
-
-
-
-// export default App
-
-
 import React, { useState } from 'react'
 
-const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>
-    {text}
-  </button>
-)
 
-// const Display = ({ text, count }) => (
-//   <p> {text} {count}</p>
-// )
-
-// const Statistics = ({ data }) => {
-//   const [good, neutral, bad] = [data[0], data[1], data[2]]
-//   const total = (good + neutral + bad)
-//   const average = (good - bad) / total
-//   const positive = (good / total) * 100
-//   return (
-//     total === 0 ? <p> No feedback given</p> :
-//       <div>
-//         <Display text="good" count={good} />
-//         <Display text="neutral" count={neutral} />
-//         <Display text="bad" count={bad} />
-//         <p>all {total}</p>
-//         <p>average {average} </p>
-//         <p>positive {positive}%</p>
-//       </div>
-//   )
-// }
-
-const Statistic = (props) => {
+const Button = (props) => {
   return (
-    <tr>
-      <td> {props.text}</td>
-      <td> {props.value}</td>
-    </tr>
+    <button onClick={props.handleClick}>{props.text}</button>
   )
 }
 
-const App = () => {
-  // save clicks of each button to its own state
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
-  const total = (good + neutral + bad)
-  const positive = (good / total) * 100
 
-  const handleClick = (feedback) => () => {
-    switch (feedback) {
-      case "good":
-        setGood(good + 1)
-        break;
-      case "neutral":
-        setNeutral(neutral + 1)
-        break;
-      case "bad":
-        setBad(bad + 1)
-        break;
-      default:
-        console.log(feedback)
-    }
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max)
+}
+
+
+const App = () => {
+  const anecdotes = [
+    'If it hurts, do it more often',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
+  ]
+
+
+  const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState({})
+  const [winner, setWinner] = useState()
+
+  const anecdoteClick = (arr) => {
+    const rand = getRandomInt(arr.length)
+    setSelected(rand)
   }
 
-  const averageCalc = (good, neutral, bad) => {
-    const total = good + neutral + bad;
-    return ((good - bad) / total)
+  const voteClick = (quote_index) => {
+    const copy = { ...votes }
+    if (quote_index in copy) {
+      copy[quote_index] += 1
+    }
+    else {
+      copy[quote_index] = 1
+    }
+    setVotes(copy)
+    mostVotes(copy)
+  }
+
+  const mostVotes = (obj) => {
+    const v = Object.keys(obj).reduce(function(a, b){ return obj[a] > obj[b] ? a : b });
+    setWinner(v)
   }
   return (
+    
     <div>
       <div>
-        <h1>Give Feedback</h1>
+        <h2> Anecdote of the Day</h2>
+        <div>
+          {anecdotes[selected]}
+          <br />
+          {votes[selected] >= 1 && <p>has  {votes[selected]} votes </p>}
+        </div>
+        <div>
+          <Button handleClick={() => voteClick(selected)} text="vote" />
+          <Button handleClick={() => anecdoteClick(anecdotes)} text="next anecdote" />
+        </div>
       </div>
       <div>
-        <Button handleClick={handleClick("good")} text="good" />
-        <Button handleClick={handleClick("neutral")} text="neutral" />
-        <Button handleClick={handleClick("bad")} text="bad" />
-      </div>
-      {total === 0 ? <p> No feedback given</p> :
+        <h2> Anecdote With Most Votes</h2>
         <div>
-          <h1> Statistics</h1>
-          <table>
-            <tbody>
-              <Statistic text="good" value={good} />
-              <Statistic text="neutral" value={neutral} />
-              <Statistic text="bad" value={bad} />
-              <Statistic text="all" value={total} />
-              <Statistic text="average" value={averageCalc(good, neutral, bad)} />
-              <Statistic text="positive" value={positive} />
-            </tbody>
-          </table>
+        {winner && <p>{anecdotes[winner]} has {votes[winner]} votes</p>}
         </div>
-      }
+      </div>
+
     </div>
   )
 }
