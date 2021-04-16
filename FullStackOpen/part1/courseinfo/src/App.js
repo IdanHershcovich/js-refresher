@@ -28,7 +28,7 @@ const App = () => {
   const [votes, setVotes] = useState({})
   const [winner, setWinner] = useState()
 
-  const anecdoteClick = (arr) => {
+  const anecdoteClick = (arr) => () => {
     const rand = getRandomInt(arr.length)
     setSelected(rand)
   }
@@ -45,7 +45,7 @@ const App = () => {
     mostVotes(copy)
   }
 
-  const mostVotes = (obj) => {
+  const mostVotes = (obj) => () => {
     const v = Object.keys(obj).reduce(function(a, b){ return obj[a] > obj[b] ? a : b });
     setWinner(v)
   }
